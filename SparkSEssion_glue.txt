@@ -1,0 +1,28 @@
+####manual sparkSession creation manually########
+
+
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("transformed-layer") \
+                .config("spark.sql.extensions", \
+                        "io.delta.sql.DeltaSparkSessionExtension") \
+                .config("spark.sql.catalog.spark_catalog",\
+                        "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+                .config("spark.databricks.delta.retentionDurationCheck.enabled",\
+                        "false") \
+                .config("spark.databricks.delta.properties.defaults.enableChangeDataFeed",\
+                        "true") \
+                .config("spark.databricks.delta.schema.autoMerge.enabled",\
+                        "true") \
+                .config("spark.databricks.delta.autoCompact.enabled",\
+                        "true") \
+                .config("spark.sql.legacy.parquet.int96RebaseModeInRead", \
+                        "CORRECTED") \
+                .config("spark.sql.legacy.parquet.int96RebaseModeInWrite", \
+                        "CORRECTED") \
+                .config("spark.sql.legacy.parquet.datetimeRebaseModeInRead", \
+                        "CORRECTED") \
+                .config("spark.sql.legacy.parquet.datetimeRebaseModeInWrite", \
+                        "CORRECTED") \
+                .getOrCreate()
